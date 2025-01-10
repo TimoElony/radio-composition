@@ -6,14 +6,8 @@ export const RadioGroup = ({ onChange, selected, children }) => {
   // and pass the correct props to each RadioOption
     const RadioOptions = React.Children.map( children, (child) => {
         return React.cloneElement(child, {  
-            checked: {
-                ...child.props.checked,
-                ...selected
-            },
-            onChange: {
-                ...child.props.onChange,
-                ...onChange
-            }
+            onChange,
+            checked: child.props.value == selected,
         })
     });
 
@@ -26,8 +20,15 @@ export const RadioOption = ({ value, checked, onChange, children }) => {
   // Also, make sure to pass the correct checked prop to the input element
   return (
     <div className="RadioOption">
-      <input id={value} checked={checked} onChange={onChange} type="radio" name={value} />
-      <label htmlFor={value}>{children}</label>
+    <input 
+    id={value} 
+    checked={checked} 
+    onChange={(e) => { 
+        onChange(e.target.value); 
+    }} 
+    type="radio" 
+    name={value} />
+    <label htmlFor={value}>{children}</label>
     </div>
   );
 };
